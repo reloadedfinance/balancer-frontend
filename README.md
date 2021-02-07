@@ -1,4 +1,4 @@
-# Balancer Exchange
+# Reloaded Exchange
 
 ## Development
 

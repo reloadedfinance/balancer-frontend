@@ -1,123 +1,108 @@
 <template>
-    <div
-        v-if="address"
-        class="account-wrapper"
-        @click="openAccountModal"
-    >
-        <div class="account-meta">
-            <Jazzicon
-                class="account-icon"
-                :address="address"
-                :size="28"
-            />
-            <div class="account-address">
-                {{ formatAddress(address) }}
-            </div>
-        </div>
-        <Icon
-            class="chevron-icon"
-            :title="'chevron'"
-        />
+  <div v-if="address" class="account-wrapper" @click="openAccountModal">
+    <div class="account-meta">
+      <Jazzicon class="account-icon" :address="address" :size="28" />
+      <div class="account-address">
+        {{ formatAddress(address) }}
+      </div>
     </div>
-    <Button
-        v-else
-        :text="'Connect'"
-        :primary="false"
-        :loading="loading"
-        :disabled="loading"
-        @click="openConnectorModal"
-    />
+  </div>
+  <Button
+    v-else
+    :text="'Connect'"
+    :primary="false"
+    :loading="loading"
+    :disabled="loading"
+    @click="openConnectorModal"
+  />
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from 'vue';
-import { useStore } from 'vuex';
+import { defineComponent, computed } from "vue";
+import { useStore } from "vuex";
 
-import { RootState } from '@/store';
-import { formatAddress } from '@/utils/helpers';
+import { RootState } from "@/store";
+import { formatAddress } from "@/utils/helpers";
 
-import Button from '@/components/Button.vue';
-import Icon from '@/components/Icon.vue';
-import Jazzicon from '@/components/Jazzicon.vue';
+import Button from "@/components/Button.vue";
+import Icon from "@/components/Icon.vue";
+import Jazzicon from "@/components/Jazzicon.vue";
 
 export default defineComponent({
-    components: {
-        Button,
-        Icon,
-        Jazzicon,
-    },
-    setup() {
-        const store = useStore<RootState>();
+  components: {
+    Button,
+    Icon,
+    Jazzicon,
+  },
+  setup() {
+    const store = useStore<RootState>();
 
-        const address = computed(() => {
-            const { connector, address } = store.state.account;
-            if (!connector || !connector.id || !address) {
-                return '';
-            }
-            return address;
-        });
+    const address = computed(() => {
+      const { connector, address } = store.state.account;
+      if (!connector || !connector.id || !address) {
+        return "";
+      }
+      return address;
+    });
 
-        const loading = computed(() => {
-            const { connector, address } = store.state.account;
-            return !!connector && !!connector.id && !address;
-        });
+    const loading = computed(() => {
+      const { connector, address } = store.state.account;
+      return !!connector && !!connector.id && !address;
+    });
 
-        function openAccountModal(): void {
-            store.dispatch('ui/openAccountModal');
-        }
+    function openAccountModal(): void {
+      store.dispatch("ui/openAccountModal");
+    }
 
-        function openConnectorModal(): void {
-            store.dispatch('ui/openConnectorModal');
-        }
+    function openConnectorModal(): void {
+      store.dispatch("ui/openConnectorModal");
+    }
 
-        return {
-            address,
-            loading,
-            formatAddress,
-            openAccountModal,
-            openConnectorModal,
-        };
-    },
+    return {
+      address,
+      loading,
+      formatAddress,
+      openAccountModal,
+      openConnectorModal,
+    };
+  },
 });
 </script>
 
 <style scoped>
 .account-wrapper {
-    height: var(--block-height);
-    width: 186px;
-    padding: 8px;
-    box-sizing: border-box;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border: 1px solid var(--border-input);
-    border-radius: var(--border-radius-small);
-    background: var(--background-secondary);
-    cursor: pointer;
+  height: var(--block-height);
+  padding: 8px;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 0;
+  cursor: pointer;
 }
 
 .account-wrapper:hover {
-    background: var(--background-hover);
+  background: var(--color-neutral-dark-grey);
 }
 
 .account-meta {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
 }
 
 .account-icon {
-    width: 28px;
-    height: 28px;
-    box-sizing: border-box;
-    border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  box-sizing: border-box;
+  border-radius: 50%;
 }
 
 .account-address {
-    margin-left: 8px;
+  margin-left: 8px;
 }
 
 .chevron-icon {
-    width: 12px;
-    height: 12px;
+  width: 12px;
+  height: 12px;
 }
 </style>

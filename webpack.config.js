@@ -18,7 +18,7 @@ module.exports =
         filename: '[name].[hash].js',
     },
     mode: isDev ? 'development' : 'production',
-    devtool: isDev ? '': 'eval',
+    devtool: isDev ? '' : 'eval',
     resolve: {
         alias: {
             '@': path.resolve(__dirname, 'src'),
@@ -28,53 +28,65 @@ module.exports =
     module:
     {
         rules:
-        [
-            {
-                test: /\.vue$/,
-                loader: 'vue-loader',
-            },
-            {
-                test: /\.tsx?$/,
-                loader: 'ts-loader',
-                // exclude: /node_modules/,
-                options: {
-                    appendTsSuffixTo: [/\.vue$/],
+            [
+                {
+                    test: /\.vue$/,
+                    loader: 'vue-loader',
                 },
-            },
-            {
-                test: /\.css$/,
-                use: ['style-loader', 'css-loader'],
-            },
-            {
-                test: /\.(png|jpg|gif|svg)$/,
-                use: [
-                    {
-                        loader: 'file-loader',
-                        options:
-                        {
-                            name: '[path][name].[ext]',
-                        },
+                {
+                    test: /\.tsx?$/,
+                    loader: 'ts-loader',
+                    // exclude: /node_modules/,
+                    options: {
+                        appendTsSuffixTo: [/\.vue$/],
                     },
-                ],
-            },
-        ],
+                },
+                {
+                    test: /\.css$/,
+                    use: ['style-loader', 'css-loader'],
+                },
+                {
+                    test: /\.(png|jpg|gif|svg)$/,
+                    use: [
+                        {
+                            loader: 'file-loader',
+                            options:
+                            {
+                                name: '[path][name].[ext]',
+                            },
+                        },
+                    ],
+                },
+                {
+                    test: /\.(woff(2)?|ttf|eot)(\?v=\d+\.\d+\.\d+)?$/,
+                    use: [
+                        {
+                            loader: 'file-loader',
+                            options: {
+                                name: '[name].[ext]',
+                                outputPath: 'fonts/',
+                            },
+                        },
+                    ],
+                },
+            ],
     },
     plugins:
-    [
-        new Dotenv({
-            systemvars: true,
-        }),
-        new CleanWebpackPlugin(),
-        new webpack.DefinePlugin({
-            __VUE_OPTIONS_API__: false,
-            __VUE_PROD_DEVTOOLS__: false,
-        }),
-        new HtmlWebpackPlugin({
-            template: 'public/index.html',
-            favicon: 'public/favicon.ico',
-        }),
-        new VueLoaderPlugin(),
-    ],
+        [
+            new Dotenv({
+                systemvars: true,
+            }),
+            new CleanWebpackPlugin(),
+            new webpack.DefinePlugin({
+                __VUE_OPTIONS_API__: false,
+                __VUE_PROD_DEVTOOLS__: false,
+            }),
+            new HtmlWebpackPlugin({
+                template: 'public/index.html',
+                favicon: 'public/favicon.ico',
+            }),
+            new VueLoaderPlugin(),
+        ],
     devServer: {
         hot: true,
     },

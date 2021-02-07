@@ -1,13 +1,9 @@
 <template>
-    <div
-        class="button"
+    <Button
+        :text="'Settings'"
+        :primary="false"
         @click="openSettingsModal"
-    >
-        <Icon
-            class="icon"
-            :title="'settings'"
-        />
-    </div>
+    />
 </template>
 
 <script lang="ts">
@@ -16,11 +12,11 @@ import { useStore } from 'vuex';
 
 import { RootState } from '@/store';
 
-import Icon from '@/components/Icon.vue';
+import Button from '@/components/Button.vue';
 
 export default defineComponent({
     components: {
-        Icon,
+        Button,
     },
     setup() {
         const store = useStore<RootState>();
@@ -36,27 +32,3 @@ export default defineComponent({
 });
 </script>
 
-<style scoped>
-.button {
-    width: 30px;
-    height: 30px;
-    box-sizing: border-box;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--text-control);
-    background: var(--background-secondary);
-    border: 1px solid var(--border-input);
-    border-radius: 50%;
-    cursor: pointer;
-}
-
-.button:hover {
-    background: var(--background-hover);
-}
-
-.icon {
-    width: 18px;
-    height: 18px;
-}
-</style>

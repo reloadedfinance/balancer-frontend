@@ -1,163 +1,141 @@
 <template>
-    <transition
-        name="appear"
-    >
-        <div
-            v-if="open"
-            class="modal-wrapper"
-        >
-            <div
-                class="backdrop"
-                @click="$emit('close')"
-            />
-            <div class="modal">
-                <div class="header">
-                    <div>
-                        {{ title }}
-                    </div>
-                    <Icon
-                        class="close-icon"
-                        :title="'close'"
-                        @click="$emit('close')"
-                    />
-                </div>
-                <div class="body">
-                    <slot />
-                </div>
-            </div>
+  <transition name="appear">
+    <div v-if="open" class="modal-wrapper">
+      <div class="backdrop" @click="$emit('close')" />
+      <div class="modal">
+        <div class="header">
+          <div>
+            {{ title }}
+          </div>
+          <Button :text="'close'" :primary="false" @click="$emit('close')" />
+          <!-- <Icon class="close-icon" :title="'close'" @click="$emit('close')" /> -->
         </div>
-    </transition>
+        <div class="body">
+          <slot />
+        </div>
+      </div>
+    </div>
+  </transition>
 </template>
 
 <script>
-import { defineComponent } from 'vue';
+import { defineComponent } from "vue";
 
-import Icon from '@/components/Icon.vue';
+import Icon from "@/components/Icon.vue";
+import Button from "@/components/Button.vue";
 
 export default defineComponent({
-    components: {
-        Icon,
+  components: {
+    Icon,
+    Button,
+  },
+  props: {
+    title: {
+      type: String,
+      required: true,
     },
-    props: {
-        title: {
-            type: String,
-            required: true,
-        },
-        open: {
-            type: Boolean,
-            required: true,
-        },
+    open: {
+      type: Boolean,
+      required: true,
     },
-    emits: ['close'],
+  },
+  emits: ["close"],
 });
 </script>
 
 <style scoped>
-.appear-enter {
-    opacity: 0;
-}
-
-.appear-enter-active {
-    animation: appear 0.2s ease-out;
-}
-
-.appear-leave-active {
-    animation: appear 0.2s ease-out reverse;
-}
-
 .modal-wrapper {
-    position: fixed;
-    display: flex;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    align-items: center;
-    justify-content: center;
-    z-index: 1;
+  position: fixed;
+  display: flex;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
 }
 
 .backdrop {
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    z-index: 2;
-    background: rgba(0, 0, 0, 0.8);
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 2;
+  background: rgba(0, 0, 0, 0.8);
 }
 
 .modal {
-    width: 440px;
-    max-height: 90%;
-    z-index: 3;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    background: linear-gradient(221.96deg, #1f1f1f -3.26%, #181818 100.91%);
-    border-radius: var(--border-radius-large);
+  color: var(--color-neutral-black);
+  width: 440px;
+  max-height: 90%;
+  z-index: 3;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+  background: var(--color-brand-primary--light);
 }
 
-.appear-enter > .modal {
-    transform: scale(0.9);
+.modal::before {
+  border: 2px solid var(--color-neutral-dark-grey);
+  bottom: 0;
+  box-sizing: border-box;
+  content: "";
+  left: 0;
+  margin: auto;
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: calc(100% - 10px);
+  width: calc(100% - 10px);
+  z-index: -1;
 }
-
-.appear-enter-active > .modal {
-    animation: grow 0.2s cubic-bezier(0.38, 0, 0.6, 1.48);
-}
-
-.appear-leave-active > .modal {
-    animation: grow 0.2s cubic-bezier(0.38, 0, 0.6, 1.48) reverse;
+.modal::after {
+  border: 2px solid var(--color-neutral-dark-grey);
+  bottom: 0;
+  box-sizing: border-box;
+  content: "";
+  left: 0;
+  margin: auto;
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: calc(100% - 20px);
+  width: calc(100% - 20px);
+  z-index: -1;
 }
 
 .header {
-    min-height: 96px;
-    box-sizing: border-box;
-    padding: 0 18px 24px 18px;
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    font-size: 22px;
-    font-weight: bold;
-    background: var(--border-input);
+  min-height: 40px;
+  box-sizing: border-box;
+  padding: 0 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  font-size: 22px;
+  font-weight: bold;
 }
 
 .close-icon {
-    width: 16px;
+  width: 16px;
+  cursor: pointer;
 }
 
 .body {
-    overflow-y: auto;
-}
-
-@keyframes appear {
-    0% {
-        opacity: 0;
-    }
-
-    100% {
-        opacity: 1;
-    }
-}
-
-@keyframes grow {
-    0% {
-        transform: scale(0.9);
-    }
-
-    100% {
-        transform: scale(1);
-    }
+  overflow-y: auto;
 }
 
 @media only screen and (max-width: 768px) {
-    .modal-wrapper {
-        align-items: flex-start;
-    }
+  .modal-wrapper {
+    align-items: flex-start;
+  }
 
-    .modal {
-        border-radius: 0;
-        max-height: 100%;
-    }
+  .modal {
+    border-radius: 0;
+    max-height: 100%;
+  }
 }
 </style>
